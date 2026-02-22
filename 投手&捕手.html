@@ -1,0 +1,536 @@
+<html>
+<head>
+    <title>投手&捕手</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+    <style>
+        /* --- 基礎設定 --- */
+        body {
+            background-image: url('./BGM/投手丘.jpg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            margin: 0;
+            font-family: "微軟正黑體", sans-serif;
+        }
+
+        /* --- 排版容器 (Flexbox) --- */
+        .container {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* --- 側邊選單 (Sidebar) --- */
+        .sidebar {
+            flex: 0 0 260px; 
+            background-color: #011d3b;
+            border: 3px solid #ffd000;
+            border-radius: 15px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: sticky;
+            top: 20px;
+            margin-top: 20px;
+            z-index: 10; /* 確保選單在最上層 */
+        }
+
+        .menu-title {
+            color: #ffd000;
+            text-align: center;
+            font-size: 2.5em;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .menu-divider {
+            border: 0;
+            height: 3px;
+            background-color: #ffd000;
+            margin-bottom: 25px;
+        }
+
+        .menu-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn.normal {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        .menu-btn.normal:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .menu-btn.active {
+            background-color: #ffd000;
+            color: #011d3b;
+            box-shadow: 0 0 10px rgba(255, 208, 0, 0.5);
+        }
+
+        /* --- 右側內容區塊 --- */
+        .content {
+            flex: 1;
+            padding-top: 20px;
+            width: 100%; /* 確保內容寬度正確 */
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            padding-top: 20px; /* 增加一點頂部空間 */
+        }
+
+        /* --- 照片牆樣式 --- */
+        .frame {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap; /* 關鍵修改：允許換行 */
+        }
+
+        .intro-text-frame {
+            display: flex;
+            margin-bottom: 50px;
+        }
+        .intro-spacer {
+            flex: none;
+            width: 15%;
+        }
+        .intro-content {
+            flex: 1;
+            color: #fff;
+            text-shadow: 1px 1px 3px #000;
+        }
+        .intro-content h3 {
+            line-height: 2em;
+            font-size: 1.2em;
+        }
+
+        .photo-box {
+            position: relative;
+            overflow: hidden;
+            width: 400px;
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            background-color: #000; /* 圖片未載入時的底色 */
+        }
+
+        .photo-box img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(1, 29, 59, 0.85);
+            color: #ffd000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none;
+        }
+
+        .photo-box:hover .overlay {
+            opacity: 1;
+        }
+        
+        .photo-box a {
+            text-decoration: none;
+        }
+        
+        .cpbl-link h1 p {
+            font-size: 0.6em;
+            background: #ffd000;
+            color: #011d3b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            pointer-events: auto;
+        }
+
+        .cpbl-link h1 p:hover {
+            background: #ffffff;
+        }
+
+        /* --- RWD 手機版設定 (新增部分) --- */
+        @media screen and (max-width: 768px) {
+            
+            /* 1. 讓排版變為垂直堆疊 */
+            .container {
+                flex-direction: column;
+                width: 90%; /* 手機版邊界留白少一點 */
+            }
+
+            /* 2. 側邊選單變為橫向滿版 */
+            .sidebar {
+                flex: none;
+                width: 100%;
+                position: static; /* 取消黏性定位 */
+                margin-top: 0;
+                margin-bottom: 20px;
+            }
+
+            /* 3. 調整照片大小適應手機 */
+            .photo-box {
+                width: 100%; /* 寬度跟隨螢幕 */
+                height: auto; /* 高度自動 */
+                aspect-ratio: 2/3; /* 鎖定長寬比，避免變形 */
+                
+                /* 強制覆蓋原本 HTML 內的 style 設定 */
+                margin-left: 0 !important; 
+            }
+
+            /* 4. 修正特殊排版框 */
+            .frame {
+                padding-left: 0 !important;
+                justify-content: center !important;
+            }
+
+            /* 5. 調整文字介紹區塊 */
+            .intro-text-frame {
+                flex-direction: column;
+            }
+            .intro-spacer {
+                display: none; /* 手機版不需要縮排 */
+            }
+            .intro-content {
+                text-align: center; /* 文字置中 */
+                padding: 0 10px;
+            }
+
+            /* 6. 標題字體縮小一點 */
+            .page-header div {
+                font-size: 3em !important; /* 強制覆蓋原本的 6em */
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+    <script>
+        window.addEventListener('click', function() {
+             var audio = document.getElementById('myAudio');
+             audio.play(); 
+        });
+    </script>
+
+    <audio id="myAudio" loop>
+        <source src="./BGM/中信兄弟2023年度應援歌曲連霸黃潮.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="page-header">
+        <div style="color: #ffd000; font-size:6em; font-weight: bolder;">18.44公尺的羈絆</div>
+        <div style="color: #ffd000; font-size:5em; font-weight: bolder;">投手</div>
+    </div>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <div class="menu-title">MENU</div>
+            <hr class="menu-divider">
+            
+            <nav>
+                <a href="./index.html" class="menu-btn normal">首頁</a>
+                <a href="./投手&捕手.html" class="menu-btn active">投手 & 捕手</a>
+                <a href="./內野手.html" class="menu-btn normal">內野手</a>
+                <a href="./外野手.html" class="menu-btn normal">外野手</a>
+                <a href="./教練團.html" class="menu-btn normal">教練團</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            
+            <div class="intro-text-frame">
+                <div class="intro-spacer"></div>
+                <div class="intro-content">
+                    <h3>
+                        他們站在聚光燈的中心，將所有的焦慮與野心，壓縮進白色的縫線裡。<br>
+                        當球離手的剎那，他們就是一道白色的閃電，試圖劃破空氣的阻力，去刺穿打者的防線。<br>
+                        投手丘是世界上最高的山峰，也是最狹窄的孤島。<br>
+                        他們必須在那裡獨自面對千軍萬馬，用手臂畫出完美的弧線，賭上自尊，去換取那清脆的進壘聲。
+                    </h3>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/林暉盛.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>林暉盛12</h1>
+                        <p>右投右打<br>188cm<br>93kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007049" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/魏碩成.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>魏碩成14</h1>
+                        <p>左投左打<br>182cm<br>85kg</p>
+                        <a href="./製作中.html" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/王凱程.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>王凱程15</h1>
+                        <p>右投右打<br>192cm<br>103kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000000776" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/鄭凱文.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>鄭凱文19</h1>
+                        <p>右投右打<br>176cm<br>83kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003334" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/江忠城.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>江忠城20</h1>
+                        <p>右投右打<br>180cm<br>90kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000001232" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/李振昌.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>李振昌34</h1>
+                        <p>右投右打<br>180cm<br>87kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003331" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/蔡齊哲.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>蔡齊哲50</h1>
+                        <p>右投右打<br>185cm<br>88kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000000778" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/呂彥青.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>呂彥青58</h1>
+                        <p>左投左打<br>177cm<br>75kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003639" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/陳琥.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>陳琥62</h1>
+                        <p>右投左打<br>180cm<br>108kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000000771" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/盧孟揚.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>盧孟揚71</h1>
+                        <p>右投左打<br>186cm<br>72kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006874" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/謝榮豪.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>謝榮豪79</h1>
+                        <p>右投右打<br>188cm<br>101kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003506" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/伍立辰.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>伍立辰83</h1>
+                        <p>右投右打<br>179cm<br>76kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007276" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/吳俊偉.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>吳俊偉94</h1>
+                        <p>右投右打<br>175cm<br>78kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000004625" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/鄭浩均.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>鄭浩均33</h1>
+                        <p>右投右打<br>191cm<br>105kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000002345" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/黃恩賜.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>黃恩賜64</h1>
+                        <p>右投左打<br>185cm<br>108kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000002271" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame"> 
+                <div class="photo-box"> 
+                    <a href="./投捕手製作中.html"><img src="./投捕手/陳冠穎.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>陳冠穎81</h1>
+                        <p>右投右打<br>183cm<br>85kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007283" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="page-header" style="margin-top: 50px;">
+                <div style="color: #ffd000; font-size:5em; font-family:Comic Sans MS; font-weight: bolder;">捕手</div>
+            </div>
+
+            <div class="intro-text-frame">
+                <div class="intro-spacer"></div>
+                <div class="intro-content">
+                    <h3>
+                        他們全身披掛著厚重的鎧甲，蹲在離危險最近的地方。<br>
+                        他們是球場上的指揮官，用眼神喝斥軟弱，用肉身擋下失控的暴投。<br>
+                        他們深知投手的極限在哪裡。他們用手套拍出響亮的節奏，用動作激發投手的鬥志。<br>
+                        他們不僅要接住球，更要接住投手瀕臨崩潰的信心，硬生生把它拽回好球帶。<br>
+                        只要他們還蹲在那裡，本壘板就是敵人永遠無法越過的雷池。
+                    </h3>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/林吳晉瑋.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>林吳晉瑋0</h1>
+                        <p>右投左打<br>179cm<br>90kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006224" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/陳統恩.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>陳統恩48</h1>
+                        <p>右投右打<br>178cm<br>88kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006732" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./高宇杰.html"><img src="./投捕手/高宇杰.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>高宇杰65</h1>
+                        <p>右投右打<br>184cm<br>88kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000002285" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/陳九登.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>陳九登72</h1>
+                        <p>右投右打<br>173cm<br>80kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007282" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/黃鈞聲.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>黃鈞聲82</h1>
+                        <p>右投右打<br>178cm<br>97kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003548" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./投捕手製作中.html"><img src="./投捕手/徐博瑋.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>徐博瑋97</h1>
+                        <p>右投右打<br>178cm<br>90kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007088" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box"> 
+                    <a href="./投捕手製作中.html"><img src="./投捕手/胡孟智.jpg" onerror="this.src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7BKuJW8PGBSCtUl6iRru8wacKxWqEacDhpLqsiI1rbs4tKBzfY5uw-NSgY9yE1SPgBU0&usqp=CAU';"></a>
+                    <div class="overlay">
+                        <h1>胡孟智52</h1>
+                        <p>右投右打<br>161cm<br>71kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000007087" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

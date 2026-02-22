@@ -1,0 +1,352 @@
+<html>
+<head>
+    <title>外野手</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	
+    <style>
+        /* --- 基礎設定 --- */
+        body {
+            /* 保留您原本的背景設定 */
+            background-image: url('./BGM/外野.jpeg');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            margin: 0;
+            font-family: "微軟正黑體", sans-serif;
+        }
+
+        /* --- 排版容器 (Flexbox) --- */
+        .container {
+            width: 95%;
+            max-width: 1600px;
+            margin: 0 auto;
+            /* 關鍵：左右並排佈局 */
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        /* --- 側邊選單 (Sidebar) --- */
+        .sidebar {
+            flex: 0 0 260px; /* 固定寬度 */
+            background-color: #011d3b; /* 深藍色底 */
+            border: 3px solid #ffd000; /* 黃色邊框 */
+            border-radius: 15px;
+            padding: 20px;
+            box-sizing: border-box;
+            position: sticky; /* 捲動時黏在上方 */
+            top: 20px;
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .menu-title {
+            color: #ffd000;
+            text-align: center;
+            font-size: 2.5em;
+            font-family: sans-serif;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            font-weight: bold;
+        }
+
+        .menu-divider {
+            border: 0;
+            height: 3px;
+            background-color: #ffd000;
+            margin-bottom: 25px;
+        }
+
+        .menu-btn {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            margin-bottom: 15px;
+            text-align: center;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn.normal {
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+        }
+        .menu-btn.normal:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* 啟用狀態 (Active) - 黃色亮起 */
+        .menu-btn.active {
+            background-color: #ffd000;
+            color: #011d3b;
+            box-shadow: 0 0 10px rgba(255, 208, 0, 0.5);
+        }
+
+        /* --- 右側內容區塊 --- */
+        .content {
+            flex: 1;
+            padding-top: 20px;
+        }
+
+        /* --- 標題區塊 --- */
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .main-title {
+            color: #011d3b; 
+            font-size: 6em; 
+            font-family: "Comic Sans MS", "微軟正黑體"; 
+            font-weight: bolder;
+            /* 為了在背景圖上更清楚，加一點白邊或陰影 */
+            text-shadow: 3px 3px 0px #fff, 0 0 10px rgba(255,255,255,0.8);
+        }
+
+        /* --- 文字介紹區塊 --- */
+        .intro-text-frame {
+            display: flex;
+            margin-bottom: 50px;
+            background-color: rgba(255, 255, 255, 0.05); /* 半透明白底，讓黑字清楚 */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .intro-content {
+            flex: 1;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+        }
+        .intro-content h3 {
+            line-height: 2em;
+            font-size: 1.3em;
+            margin: 0;
+        }
+
+        /* --- 照片牆樣式 --- */
+        .frame {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            gap: 15px;
+            flex-wrap: wrap; 
+        }
+
+        .photo-box {
+            position: relative;
+            overflow: hidden;
+            width: 400px;
+            height: 600px;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            background-color: #000;
+        }
+
+        .photo-box img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 遮罩層 */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(1, 29, 59, 0.85);
+            color: #ffd000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+            pointer-events: none; /* 讓滑鼠事件穿透 */
+        }
+
+        /* Hover 效果 */
+        .photo-box:hover .overlay {
+            opacity: 1;
+        }
+        
+        .photo-box a { text-decoration: none; }
+
+        /* 官網連結按鈕樣式 */
+        .cpbl-link h1 p {
+            font-size: 0.6em;
+            background: #ffd000;
+            color: #011d3b;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            pointer-events: auto; /* 確保按鈕可點擊 */
+        }
+        .cpbl-link h1 p:hover {
+            background: #ffffff;
+        }
+
+    </style>
+</head>
+
+<body>
+    <script>
+        window.addEventListener('click', function() {
+             var audio = document.getElementById('myAudio');
+             audio.play(); 
+        });
+    </script>
+
+    <audio id="myAudio" loop>
+        <source src="./BGM/【黃潮再起】2022中信兄弟嗆司曲.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="page-header">
+        <div class="main-title">仰望蒼穹的解題者</div>
+    </div>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <div class="menu-title">MENU</div>
+            <hr class="menu-divider">
+            
+            <nav>
+                <a href="./index.html" class="menu-btn normal">首頁</a>
+                <a href="./投手&捕手.html" class="menu-btn normal">投手 & 捕手</a>
+                <a href="./內野手.html" class="menu-btn normal">內野手</a>
+                <a href="./外野手.html" class="menu-btn active">外野手</a>
+                <a href="./教練團.html" class="menu-btn normal">教練團</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            
+            <div class="intro-text-frame">
+                <div class="intro-content">
+                    <h3>
+                        他們駐守在廣袤的綠色荒原上，遠離內野的喧囂與紅土的飛揚。<br>
+                        他們是球場上的最後一道防線，背靠著全壘打牆，守護著不可被侵犯的邊境。<br>
+                        當白球劃破長空，他們便開始奔跑。那不是倉皇的追趕，而是一種關於風向與速度的計算。<br>
+                        他們在草地上飛馳，只為了在球落地的最後一瞬，伸出手套，溫柔而堅決地將那隻「白色的鳥」收入掌心。<br>
+                        為了攔截那顆即將落地的球，他們縱身一躍，身體在空中劃出一道與地面平行的直線。那一刻，時間彷彿靜止，地心引力暫時失效。
+                    </h3>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/曾頌恩.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>曾頌恩1</h1>
+                        <p>右投右打<br>178cm<br>90kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000005569" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/許庭綸.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>許庭綸13</h1>
+                        <p>右投右打<br>182cm<br>83kg</p>
+                        <a href="http://www.cpbl.com.tw/team/person?acnt=0000007278" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/詹子賢.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>詹子賢39</h1>
+                        <p>右投右打<br>183cm<br>95kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000002297" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/林書逸.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>林書逸43</h1>
+                        <p>右投左打<br>181cm<br>82kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000001754" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/張志豪.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>張志豪7</h1>
+                        <p>右投左打<br>180cm<br>92kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000003183" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./宋晟睿.html"><img src="./外野手/宋晟睿.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>宋晟睿88</h1>
+                        <p>右投右打<br>182cm<br>88kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006225" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame">
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/岳政華.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>岳政華92</h1>
+                        <p>左投左打<br>176cm<br>85kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000005571" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/李聖裕.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>李聖裕2</h1>
+                        <p>右投左打<br>178cm<br>80kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000005656" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+
+                <div class="photo-box">
+                    <a href="./外野手製作中.html"><img src="./外野手/黃鈞麟.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>黃鈞麟60</h1>
+                        <p>左投左打<br>175cm<br>66kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006734" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="frame" style="justify-content: flex-start; padding-left: 17px;">
+                <div class="photo-box" style="margin-left: calc(50% - 620px);">
+                    <a href="./外野手製作中.html"><img src="./外野手/劉貴元.jpg" onerror="this.src='https://scontent.ftpe8-2.fna.fbcdn.net/v/t39.30808-6/471259263_1613693239254059_6060980401153434940_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tA5fEpGAc8wQ7kNvwET8Z5l&_nc_oc=AdlzsigLyzqfW8LwN7XOX5oH86f1BrjfxMi6ZE49fKf5m70so8L06BR8QGsAPJWmjlI&_nc_zt=23&_nc_ht=scontent.ftpe8-2.fna&_nc_gid=jCVz8OkOcJKV8db_X6qkyA&oh=00_AfgqL0mfOY5_vFMZ7biJpanKnWxwC58SKPNdqeoTGM_c1A&oe=692DC8E9';"></a>
+                    <div class="overlay">
+                        <h1>劉貴元85</h1>
+                        <p>右投左打<br>177cm<br>78kg</p>
+                        <a href="https://www.cpbl.com.tw/team/person?acnt=0000006221" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>

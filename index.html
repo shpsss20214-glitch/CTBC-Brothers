@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">  <!-- --萬國碼---->
+    <title>中信兄弟 - 王者之象</title>
+    
+    <style>
+        * {
+            box-sizing: border-box; 
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;
+            
+            /* --- 這裡是你原本的背景設定 --- */
+            background-image: url('./BGM/棒球場.jpg'); 
+            background-repeat: no-repeat;
+            background-size: cover;     /* 填滿螢幕 */
+            background-attachment: fixed; /* 固定背景不動 */
+            background-position: center;  /* 置中 */
+            
+        }
+
+        /* --- 標題區塊 --- */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: rgba(1, 29, 59, 0.85); /* 深藍色半透明遮罩 */
+            box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+    
+        }
+
+        .main-title {
+            font-size: 5em; 
+            font-weight: 900;
+            
+            /* 流光金屬質感文字 */
+            background: linear-gradient(to right, #ffd000, #ffffff, #ffd000, #d4af37);
+            background-size: 200% auto;
+            color: transparent;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shine 3s linear infinite;
+            text-shadow: 0 0 20px rgba(255, 208, 0, 0.3);
+        }
+
+        @keyframes shine {
+            to { background-position: 200% center; }
+        }
+
+        /* --- 主要佈局容器 (Flexbox) --- */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            gap: 30px; 
+        }
+
+        /* --- MENU --- */
+        .sidebar {
+            
+            background-color: rgba(1, 29, 59, 0.9); /* 深藍色背景 */
+            border-radius: 10px;
+            padding: 20px;
+            height: fit-content; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+            border: 2px solid #ffd000;
+        }
+
+        .menu-title {
+            color: #ffd000;
+            text-align: center;
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ffd000;
+            padding-bottom: 10px;  
+        }
+        
+
+        .sidebar a {
+            display: block;
+            text-decoration: none;
+            color: #fff;
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-radius: 5px;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+        }
+
+        .sidebar a:hover {
+            background-color: #ffd000;
+            color: #011d3b;
+            font-weight: bold;
+            border-left: 5px solid #fff;
+            transform: translateX(5px); 
+        }
+
+        /* --- 主要內容區塊 --- */
+        .content {
+            flex: 1; 
+            padding: 40px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .content h2 {
+            color: #000000;
+            font-size: 2em;
+            border-left: 8px solid #ffd000;
+            padding-left: 15px;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .content h2:first-child {
+            margin-top: 0;
+        }
+
+        .neon-text {
+            text-align: center;
+            font-size: 2.5em;
+            color: #000000;
+            margin-bottom: 30px;
+            text-shadow: 0 0 5px #fff; /* 增加一點白色光暈確保在圖片上清楚 */
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 5px #ffd000; }
+            to { text-shadow: 0 0 20px #ffd000, 0 0 30px #f39c12; }
+        }
+
+        .text-block {
+            line-height: 1.8;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            text-align: justify; 
+            font-weight: 600; /* 字體稍微加粗一點，在透明背景上比較好看 */
+        }
+
+        .highlight-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .highlight-list li {
+            background: #011d3b;
+            color: #ffd000;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        hr {
+            border: 0;
+            height: 2px;
+            background: linear-gradient(to right, rgba(1, 29, 59, 0), #ffd000, rgba(1, 29, 59, 0));
+            margin: 30px 0;
+        }
+
+        .moment-item {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: baseline;
+        }
+        .moment-year {
+            color: #ffd000; /* 深金色，對比度較高 */
+            font-weight: bold;
+            min-width: 120px;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <script>
+        window.addEventListener('click', function() {
+            var audio = document.getElementById('myAudio');
+            if (audio.paused) {
+                audio.play().catch(e => console.log("需互動才能播放"));
+            }
+        });
+    </script>
+    <audio id="myAudio" loop>
+        <source src="./BGM/中信兄弟2024年度應援歌曲 進擊取勝.mp3" type="audio/mpeg">
+    </audio>
+
+    <header>
+        <div class="main-title">中信兄弟一軍球員介紹</div>
+    </header>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <div class="menu-title">MENU</div>
+            <nav>
+                <a href="./index.html">首頁</a>
+                <a href="./投手&捕手.html">投手 & 捕手</a>
+                <a href="./內野手.html">內野手</a>
+                <a href="./外野手.html">外野手</a>
+                <a href="./教練團.html">教練團</a>
+            </nav>
+        </aside>
+
+        <main class="content">
+            
+            <div class="neon-text"><b>帶你初步認識中信兄弟</b></div>
+
+            <h2>一、前言</h2>
+            <div class="text-block">
+                中信兄弟隊不僅在台灣職棒有深厚的歷史根基，也在各個時期展現出強大的競爭力與文化影響力。從創隊、三連霸、轉型、再奪冠，到和球迷共創記憶，都是台灣職棒史中不可忽視的一環。
+            </div>
+
+            <hr>
+
+            <h2>二、球隊歷史</h2>
+            <div class="text-block">
+                球隊最早源自於 <strong>兄弟大飯店</strong> 所成立的業餘球隊「兄弟飯店棒球隊」，成立於 1984 年 9 月 1 日。該隊逐步轉為乙組、甲組，並於職業化之後，成為中華職業棒球大聯盟（CPBL）創始球隊之一。
+                <br><br>
+                在職棒時期，隊名為兄弟象 (1990-2013)。2014 年起由 <strong>中國信託金控</strong> 主導，改名為「中信兄弟」。一軍球隊長期駐紮於台中，主場為台中洲際棒球場，二軍主場則是位於屏東的中國信託公益園區。
+                <br><br>
+                球隊以「黃潮」為象徵色（黃色＋象），擁有強烈的歷史感，是台灣職棒中歷史最悠久、最具代表性的球隊之一。
+            </div>
+
+            <hr>
+
+            <h2>三、總冠軍數與重要紀錄</h2>
+            <div class="text-block">
+                截至 2024 年，球隊（含兄弟象前身）共有 <strong>10 座總冠軍</strong>，與統一獅並列為聯盟歷史最多冠軍的球隊之一。球隊亦創下兩次「三連霸」紀錄，分別於 1992–1994 年、2001–2003 年。
+            </div>
+            
+            <div style="margin: 15px 0; font-weight: bold; color:#000000;">隊史總冠軍年份：</div>
+            <ul class="highlight-list">
+                <li>1992</li>
+                <li>1993</li>
+                <li>1994</li>
+                <li>2001</li>
+                <li>2002</li>
+                <li>2003</li>
+                <li>2010</li>
+                <li>2021</li>
+                <li>2022</li>
+                <li>2024</li>
+            </ul>
+
+            <hr>
+
+            <h2>四、難忘的經典時刻</h2>
+            <div class="text-block">
+                <div class="moment-item">
+                    <span class="moment-year">1992年</span>
+                    <span>例行賽中於 45 場中拿下 37 勝，創下當時最快封王紀錄。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2010年</span>
+                    <span>台灣大賽兄弟象以 4 勝 0 敗完封對手，重返榮耀。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2015年</span>
+                    <span>台灣大賽 G7，雖然遺憾落敗，但對手明星（Pat Misch）投出了無安打比賽，見證歷史。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2020.07.01</span>
+                    <span>單場 6 支全壘打（含連 5 發三分砲），以 20:0 轟垮樂天桃猿。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2021年</span>
+                    <span>台灣大賽上演戲劇性大逆轉，最終直落四橫掃封王，終結「七年六亞」魔咒。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2022年</span>
+                    <span>台灣大賽以 4 勝 0 敗橫掃統一獅，完成二連霸。</span>
+                </div>
+                <div class="moment-item">
+                    <span class="moment-year">2024年</span>
+                    <span>奪下隊史第十冠！在台灣大賽中以 4 勝 1 敗擊敗統一獅隊，並列聯盟最多冠球隊。</span>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+</body>
+</html>

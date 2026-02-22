@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網站建置中</title>
+    <linkpreconnect="https://fonts.googleapis.com">
+    <linkpreconnect="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Poppins:wght@600&display=swap" rel="stylesheet">
+
+<style>
+/* --- 全局設定 --- */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    /* 改用深色漸層背景，更有質感 */
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e0e0; /* 淺色文字 */
+    font-family: 'Poppins', 'Noto Sans TC', Arial, sans-serif;
+}
+
+.container {
+    text-align: center;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, 0.05); /* 輕微的半透明背景框 */
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    backdrop-filter: blur(5px); /* 背景模糊效果 */
+    max-width: 600px;
+    width: 90%;
+}
+
+/* --- 轉圈圈樣式 (加大版) --- */
+.loader {
+    /* 這裡控制整體大小，從 40px 改為 100px */
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 30px auto;
+    position: relative;
+}
+
+.dot {
+    /* 邊框也需要等比例加粗，從 4px 改為 8px */
+    border: 8px solid rgba(255, 255, 255, 0.1); /* 淺色軌跡 */
+    border-top: 8px solid #00d2ff;     /* 亮藍色的轉動部分 */
+    border-radius: 50%;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box; /* 確保邊框包含在寬高內 */
+    animation: spin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* 使用更有趣的旋轉曲線 */
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* --- 文字排版 --- */
+h1 {
+    color: #00d2ff; /* 配合轉圈圈的顏色 */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.main-message {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    color: #ffffff;
+}
+
+/* --- 道歉牆樣式 --- */
+.sorry-wall {
+    display: flex;
+    flex-wrap: wrap; /* 允許換行 */
+    justify-content: center;
+    gap: 10px; /* 標籤之間的間距 */
+    margin-bottom: 40px;
+}
+
+.sorry-tag {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #aaa;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+/* 滑鼠移過道歉標籤的效果 */
+.sorry-tag:hover {
+    background-color: rgba(0, 210, 255, 0.2);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* --- 返回首頁按鈕 (現代化 CSS 按鈕) --- */
+.home-btn {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: #011d3b; /* 原本的深藍色 */
+    color: #ffd000; /* 原本的黃色字 */
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 30px;
+    border: 2px solid #ffd000;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(1, 29, 59, 0.4);
+}
+
+.home-btn:hover {
+    background-color: #ffd000;
+    color: #011d3b;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(255, 208, 0, 0.3);
+}
+
+</style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="loader">
+            <div class="dot"></div>
+        </div>
+
+        <h1>網站建置中</h1>
+        
+        <div class="main-message">
+            <p>教練我不是很熟啦 (༎ຶ⌑༎ຶ)<br>沒幾個是我這個年代的╮(╯_╰)╭<br>就不每個都做了 (●´ω｀●)ゞ</p>
+        </div>
+        
+        <div class="sorry-wall">
+            <span class="sorry-tag">非常抱歉</span>
+            <span class="sorry-tag">拍謝</span>
+            <span class="sorry-tag">Sorry</span>
+            <span class="sorry-tag">ごめんなさい</span>
+            <span class="sorry-tag">미안하다</span>
+            <span class="sorry-tag">Entschuldigung</span>
+            <span class="sorry-tag">Désolé</span>
+            <span class="sorry-tag">Mi dispiace</span>
+            <span class="sorry-tag">Scusi</span>
+            <span class="sorry-tag">Perdona</span>
+            <span class="sorry-tag">Извините!</span>
+            <span class="sorry-tag">Özür dilerim</span>
+            <span class="sorry-tag">Przepraszam</span>
+            <span class="sorry-tag">Því miður</span>
+            <span class="sorry-tag">Xin lỗi</span>
+            <span class="sorry-tag">Desculpe</span>
+            <span class="sorry-tag">Minta maaf</span>
+            <span class="sorry-tag">ขอโทษ</span>
+        </div>
+
+        <a href="./index.html" class="home-btn">
+            返回首頁
+        </a>
+        <a href="./教練團.html" class="home-btn">
+            返回教練團
+        </a>
+    </div>
+
+</body>
+</html>

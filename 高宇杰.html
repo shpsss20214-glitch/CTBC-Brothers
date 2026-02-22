@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <title>高宇杰 - 兄弟鐵捕</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    
+
+    <style>
+        /* --- 全域設定 --- */
+        :root {
+            --primary-blue: #011d3b;
+            --secondary-blue: #003366;
+            --primary-yellow: #ffd000;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--primary-blue);
+            background-image: linear-gradient(180deg, #011d3b 0%, #001225 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- 標題區 --- */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+
+        .main-title {
+            color: var(--primary-yellow);
+            font-size: 6rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 208, 0, 0.6);
+            letter-spacing: 10px;
+            margin: 0;
+            font-family: "標楷體", "KaiTi", serif;
+        }
+
+        /* --- 主要佈局 (Flexbox) --- */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* --- 側邊導航欄 --- */
+        .sidebar {
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .nav-btn {
+            display: block;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid var(--primary-yellow);
+            color: var(--primary-yellow);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-yellow);
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--primary-yellow);
+        }
+
+        /* --- 內容區 --- */
+        .content {
+            flex: 1;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        /* --- 輪播動畫區 (無限循環核心邏輯) --- */
+        .carousel-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .carousel {
+            width: 900px;   
+            height: 550px;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            border: 4px solid var(--primary-yellow);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-set {
+            /* 寬度計算：800px * 6張圖 (5張原圖 + 1張替身) = 4800px */
+            width: 4800px;
+            height: 550px;
+            /* 動畫時間：20秒播完一輪 */
+            animation: playMovie 20s linear infinite;
+        }
+
+        .carousel-set:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-content {
+            width: 800px;
+            height: 500px;
+            float: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .carousel-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 無限循環動畫關鍵影格 */
+        @keyframes playMovie {
+            /* 第 1 張 */
+            0%   { margin-left: 0px; }
+            15%  { margin-left: 0px; }
+            
+            /* 第 2 張 */
+            20%  { margin-left: -800px; }
+            35%  { margin-left: -800px; }
+            
+            /* 第 3 張 */
+            40%  { margin-left: -1600px; }
+            55%  { margin-left: -1600px; }
+            
+            /* 第 4 張 */
+            60%  { margin-left: -2400px; }
+            75%  { margin-left: -2400px; }
+            
+            /* 第 5 張 */
+            80%  { margin-left: -3200px; }
+            95%  { margin-left: -3200px; }
+            
+            /* 第 6 張 (第1張的替身) */
+            100% { margin-left: -4000px; }
+        }
+
+        /* --- 資訊卡片設計 --- */
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 208, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- 個人檔案區 --- */
+        .profile-header {
+            text-align: center;
+        }
+
+        .nickname-box h2 {
+            color: var(--primary-yellow);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .ig-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #fff;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .ig-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- 音樂播放器 --- */
+        .audio-player {
+            margin: 20px auto;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            border-left: 5px solid var(--primary-yellow);
+        }
+        .audio-title {
+            color: var(--primary-yellow);
+            font-family: "標楷體", serif;
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* --- 應援詞 --- */
+        .lyrics-box {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ddd;
+            border: 2px dashed var(--primary-yellow);
+            padding: 20px;
+            margin: 0 auto;
+            width: fit-content;
+            border-radius: 10px;
+        }
+        
+        /* --- 標題樣式 --- */
+        .section-title {
+            font-family: "標楷體", serif;
+            color: var(--primary-yellow);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 40px 0 20px 0;
+            border-bottom: 2px solid var(--primary-yellow);
+            padding-bottom: 10px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* --- 職業生涯列表 --- */
+        .career-list {
+            list-style: none;
+            padding: 0;
+        }
+        .career-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--primary-yellow);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            transition: background 0.3s;
+        }
+        .career-item:hover {
+            background: rgba(255, 208, 0, 0.1);
+        }
+
+        /* --- 成就列表 --- */
+        .awards-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .awards-list li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .awards-list li::before {
+            content: "🏆";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* --- 響應式微調 --- */
+        @media (max-width: 950px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: row;
+                justify-content: center;
+                position: static;
+                width: 100%;
+            }
+            .carousel {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 900 / 550;
+            }
+            .carousel-set {
+                height: 100%;
+            }
+            .carousel-content {
+                width: 800px;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="main-title">高宇杰</h1>
+    </header>
+
+    <div class="container">
+        
+        <aside class="sidebar">
+            <a href="./index.html" class="nav-btn">返回首頁</a>
+            <a href="./投手&捕手.html" class="nav-btn">返回投手&捕手</a>
+        </aside>
+
+        <main class="content">
+            
+            <div class="carousel-wrapper">
+                <div class="carousel">
+                    <div class="carousel-set">
+                        
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=4vqY6MSB4gQ" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰1.jpg" alt="再見安打" title="再見安打">
+                            </a>
+                        </div>
+                        
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=rhbloC7pm-M" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰2.jpg" alt="阻殺合輯" title="阻殺合輯">
+                            </a>
+                        </div>
+                        
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=5vxYxPNBgH4" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰3.jpg" alt="全壘打" title="全壘打">
+                            </a>
+                        </div>
+                        
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=6iLYwNbQEmM" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰4.jpg" alt="美技撲接" title="美技撲接">
+                            </a>
+                        </div>
+                        
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=bjnVz2o3-d4" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰5.jpg" alt="裁判誤判" title="裁判誤判">
+                            </a>
+                        </div>
+
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=4vqY6MSB4gQ" target="_blank">
+                                <img src="./投捕手/高宇杰/高宇杰1.jpg" alt="再見安打" title="再見安打">
+                            </a>
+                        </div>
+
+                    </div></div></div><div class="info-section">
+                
+                <div class="card profile-header">
+                    <div class="nickname-box">
+                        <span style="color:#aaa; font-size:0.9rem;">綽號列表</span>
+                        <h2>UJ、小高</h2>
+                    </div>
+                    
+                    <a href="https://www.instagram.com/65_y.c.kao/" target="_blank" class="ig-link">
+                        IG: 65_y.c.kao
+                    </a>
+
+                    <br><br>
+
+                    <div class="audio-player">
+                        <span class="audio-title">應援曲</span>
+                        <audio controls>
+                            <source src="./投捕手/高宇杰/65中信兄弟高宇杰應援曲.mp3" type="audio/mpeg">
+                            您的瀏覽器不支援此音樂播放器。
+                        </audio>
+                    </div>
+
+                    <br><br>
+
+                    <div class="lyrics-box">
+                        <p>左線預備</p>
+                        <p>右線預備</p>
+                        <p>全線預備</p>
+                        <p>高宇杰&emsp;On Fire！</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">職業生涯</h2>
+                    <div class="career-list">
+                        <div class="career-item">
+                            <strong>2019年6月25日</strong><br>
+                            於洲際棒球場面對富邦悍將隊的比賽生涯初登場就擔任先發捕手，第一打席面對伍鐸擊出生涯首安，為一支二壘安打。
+                        </div>
+                        <div class="career-item">
+                            <strong>2019年10月5日</strong><br>
+                            於桃園國際棒球場對戰Lamigo桃猿隊先發投手翁瑋均，擊出生涯首發全壘打。
+                        </div>
+                        <div class="career-item">
+                            <strong>2019年11月12日</strong><br>
+                            世界棒球12強賽的複賽，中華隊對決南韓隊，本次賽事首度擔任先發捕手，中華隊在二局上，已2出局、但一壘有人時，從金廣鉉手中敲出左半邊深遠的二壘安打，帶有1分打點，也是台韓兩隊的第一分，更成為本場的勝利打點，最終中華隊以7：0擊敗南韓，取得複賽的首勝。
+                        </div>
+                        <div class="career-item">
+                            <strong>2024年10月25日</strong><br>
+                            台灣大賽第5戰於洲際棒球場對戰統一獅，4局上半完成兩次盜壘阻殺，成為史上第1位在台灣大賽單局演出兩次盜壘阻殺的捕手。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">生涯成就與獲獎紀錄</h2>
+                    <ul class="awards-list">
+                        <li>中華職棒年度總冠軍：2021、2022、2024</li>
+                        <li>中華職棒明星賽：2022、2024、2025</li>
+                    </ul>
+                </div>
+
+            </div></main>
+    </div></body>
+</html>

@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <title>江坤宇介紹</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+
+    <style>
+        /* --- 全域設定 --- */
+        :root {
+            --primary-blue: #011d3b;
+            --secondary-blue: #003366;
+            --primary-yellow: #ffd000;
+            --text-color: #ffffff;
+            --card-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            background-color: var(--primary-blue);
+            background-image: linear-gradient(180deg, #011d3b 0%, #001225 100%);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* --- 標題區 --- */
+        header {
+            text-align: center;
+            padding: 40px 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent);
+        }
+
+        .main-title {
+            color: var(--primary-yellow);
+            font-size: 6rem;
+            font-weight: 900;
+            text-shadow: 0 0 20px rgba(255, 208, 0, 0.6);
+            letter-spacing: 10px;
+            margin: 0;
+            font-family: "標楷體", "KaiTi", serif;
+        }
+
+        /* --- 主要佈局 (Flexbox) --- */
+        .container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+            gap: 30px;
+        }
+
+        /* --- 側邊導航欄 --- */
+        .sidebar {
+            flex: 0 0 200px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: sticky;
+            top: 20px;
+            height: fit-content;
+        }
+
+        .nav-btn {
+            display: block;
+            padding: 15px;
+            background: transparent;
+            border: 2px solid var(--primary-yellow);
+            color: var(--primary-yellow);
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:hover {
+            background-color: var(--primary-yellow);
+            color: var(--primary-blue);
+            transform: translateY(-3px);
+            box-shadow: 0 0 15px var(--primary-yellow);
+        }
+
+        /* --- 內容區 --- */
+        .content {
+            flex: 1;
+            background-color: transparent;
+            overflow: hidden;
+        }
+
+        /* --- 輪播動畫區 (無限循環核心邏輯) --- */
+        .carousel-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-bottom: 50px;
+        }
+
+        .carousel {
+            width: 900px;   /* 視窗寬度 */
+            height: 550px;
+            overflow: hidden;
+            position: relative;
+            background-color: #000;
+            border: 4px solid var(--primary-yellow);
+            border-radius: 15px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .carousel-set {
+            /* 寬度計算：800px * 6張圖 (5張原圖 + 1張替身) = 4800px */
+            width: 4800px;
+            height: 550px;
+            /* 動畫時間：設定為20秒播完一輪 */
+            animation: playMovie 20s linear infinite;
+        }
+
+        /* 滑鼠移上去暫停，方便點擊 */
+        .carousel-set:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-content {
+            width: 800px;
+            height: 500px;
+            float: left;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .carousel-content img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 無限循環動畫關鍵影格 
+           原理：播放到最後一張(第1張的複製品)時，瞬間跳回真正的第1張
+        */
+        @keyframes playMovie {
+            /* 第 1 張 (靜止) */
+            0%   { margin-left: 0px; }
+            15%  { margin-left: 0px; }
+            
+            /* 滑向 第 2 張 */
+            20%  { margin-left: -800px; }
+            35%  { margin-left: -800px; }
+            
+            /* 滑向 第 3 張 */
+            40%  { margin-left: -1600px; }
+            55%  { margin-left: -1600px; }
+            
+            /* 滑向 第 4 張 */
+            60%  { margin-left: -2400px; }
+            75%  { margin-left: -2400px; }
+            
+            /* 滑向 第 5 張 */
+            80%  { margin-left: -3200px; }
+            95%  { margin-left: -3200px; }
+            
+            /* 滑向 第 6 張 (第1張的複製品) */
+            100% { margin-left: -4000px; }
+            /* 動畫結束後，CSS會自動歸零回到 0%，因為圖一樣，視覺上是無縫的 */
+        }
+
+        /* --- 資訊卡片設計 --- */
+        .info-section {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 208, 0, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        /* --- 個人檔案區 --- */
+        .profile-header {
+            text-align: center;
+        }
+
+        .nickname-box h2 {
+            color: var(--primary-yellow);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            line-height: 1.8;
+        }
+
+        .ig-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #fff;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); 
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.2s;
+        }
+        .ig-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* --- 音樂播放器 --- */
+        .audio-player {
+            margin: 20px auto;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            border-radius: 15px;
+            display: inline-block;
+            border-left: 5px solid var(--primary-yellow);
+        }
+        .audio-title {
+            color: var(--primary-yellow);
+            font-family: "標楷體", serif;
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        /* --- 應援詞 --- */
+        .lyrics-box {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #ddd;
+            border: 2px dashed var(--primary-yellow);
+            padding: 20px;
+            margin: 0 auto;
+            width: fit-content;
+            border-radius: 10px;
+        }
+        
+        /* --- 標題樣式 --- */
+        .section-title {
+            font-family: "標楷體", serif;
+            color: var(--primary-yellow);
+            font-size: 2.5rem;
+            text-align: center;
+            margin: 40px 0 20px 0;
+            border-bottom: 2px solid var(--primary-yellow);
+            padding-bottom: 10px;
+            display: inline-block;
+            width: 100%;
+        }
+
+        /* --- 職業生涯列表 --- */
+        .career-list {
+            list-style: none;
+            padding: 0;
+        }
+        .career-item {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            border-left: 4px solid var(--primary-yellow);
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            transition: background 0.3s;
+        }
+        .career-item:hover {
+            background: rgba(255, 208, 0, 0.1);
+        }
+
+        /* --- 成就列表 --- */
+        .awards-list {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+        
+        .awards-list li {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .awards-list li::before {
+            content: "🏆";
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+
+        /* --- 響應式微調 --- */
+        @media (max-width: 950px) {
+            .container {
+                flex-direction: column;
+            }
+            .sidebar {
+                flex-direction: row;
+                justify-content: center;
+                position: static;
+                width: 100%;
+            }
+            /* 小螢幕時讓輪播縮放 */
+            .carousel {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 900 / 550;
+            }
+            .carousel-set {
+                height: 100%;
+            }
+            .carousel-content {
+                width: 800px; /* 動畫依賴固定寬度，這裡保持像素寬度以免動畫跑掉，利用外層 overflow 切割 */
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1 class="main-title">江坤宇</h1>
+    </header>
+
+    <div class="container">
+        
+        <aside class="sidebar">
+            <a href="./index.html" class="nav-btn">返回首頁</a>
+            <a href="./內野手.html" class="nav-btn">返回內野手</a>
+        </aside>
+
+        <main class="content">
+            
+            <div class="carousel-wrapper">
+                <div class="carousel">
+                    <div class="carousel-set">
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=qqLv2qS4rkU" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇1.jpg" alt="2024美技合輯" title="2024美技合輯">
+                            </a>
+                        </div>
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=qkKoxwvbkwA" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇2.jpg" alt="2025美技合輯" title="2025美技合輯">
+                            </a>
+                        </div>
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=MJ75eFGqDGc&t=40s" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇3.jpg" alt="再見全壘打" title="再見全壘打">
+                            </a>
+                        </div>
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=x3fR_u2aAxw" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇4.jpg" alt="12強陽春砲" title="12強陽春砲">
+                            </a>
+                        </div>
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=Y2MgNFWgr-s" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇5.jpg" alt="12強" title="12強">
+                            </a>
+                        </div>
+
+                        <div class="carousel-content">
+                            <a href="https://www.youtube.com/watch?v=qqLv2qS4rkU" target="_blank">
+                                <img src="./內野手/江坤宇/江坤宇1.jpg" alt="2024美技合輯" title="2024美技合輯">
+                            </a>
+                        </div>
+
+                    </div></div></div><div class="info-section">
+                
+                <div class="card profile-header">
+                    <div class="nickname-box">
+                        <span style="color:#aaa; font-size:50px;">綽號</span>
+                        <h2>團寵草莓牛奶小可愛游擊柯基國民兒子小白豬老將小可怕江督嘟嘟嘴天竺鼠車車閃電麥坤坤ㄏㄏ我坤善逸西殺江坤宇</h2>
+                    </div>
+                    
+                    <a href="https://www.instagram.com/mike20108980/" target="_blank" class="ig-link">
+                        IG: mike20108980
+                    </a>
+
+                    <br><br>
+
+                    <div class="audio-player">
+                        <span class="audio-title">應援曲</span>
+                        <audio controls>
+                            <source src="./內野手/江坤宇/90中信兄弟江坤宇應援曲.mp3" type="audio/mpeg">
+                            您的瀏覽器不支援此音樂播放器。
+                        </audio>
+                    </div>
+
+                    <br><br>
+
+                    <div class="lyrics-box">
+                        <p>拍拍&emsp;坤宇</p>
+                        <p>拍拍&emsp;(棒次)</p>
+                        <p>拍拍拍拍</p>
+                        <p>鐵壁銅牆</p>
+                        <br>
+                        <p>拍拍&emsp;坤宇</p>
+                        <p>拍拍&emsp;(棒次)</p>
+                        <p>拍拍拍拍</p>
+                        <p>一棒過牆</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">職業生涯</h2>
+                    <div class="career-list">
+                        <div class="career-item">
+                            <strong>2019年10月5日</strong><br>
+                            於桃園國際棒球場對戰Lamigo桃猿隊投手張明翔，擊出生涯首支安打，為一支內野安打。
+                        </div>
+                        <div class="career-item">
+                            <strong>2020年4月18日</strong><br>
+                            於洲際棒球場面對統一7-ELEVEn獅隊投手鄭鈞仁擊出生涯首發全壘打，帶有兩分打點。
+                        </div>
+                        <div class="career-item">
+                            <strong>2020年7月11日</strong><br>
+                            於洲際棒球場對戰富邦悍將，4局下從陳仕朋手中擊出生涯首支滿貫全壘打，是隊史最年輕擊出滿貫砲的選手。
+                        </div>
+                        <div class="career-item">
+                            <strong>2023年8月23日</strong><br>
+                            於洲際棒球場對戰富邦悍將，10局下從曾峻岳手中擊出生涯首支再見全壘打。
+                        </div>
+                        <div class="career-item">
+                            <strong>2024年 12強賽</strong><br>
+                            江坤宇入選為12強賽國家隊代表。預賽面臨多明尼加時，對決先發投手威能帝擊出關鍵陽春砲，不僅是他在大巨蛋首轟，更是生涯首次對威能帝開轟。<br>
+                            超級循環賽中華隊對陣美國一役，江坤宇擊出關鍵的三分打點清壘三壘安打，讓中華隊拿下勝利。
+                        </div>
+                        <div class="career-item">
+                            <strong>2025年1月24日 (最新合約)</strong><br>
+                            中信兄弟宣布與江坤宇達成10年最高總值1億4788萬元的合約共識。2025年月薪升至66萬，第5年達120萬。附帶1000萬激勵獎金，創下中職史上最年輕月薪破百萬紀錄，刷新陳子豪與味全龍的合約紀錄。
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2 class="section-title">生涯成就與獲獎紀錄</h2>
+                    <ul class="awards-list">
+                        <li>中華職棒年度總冠軍：2021、2022、2024</li>
+                        <li>台灣大賽優秀球員獎：2020</li>
+                        <li>中華職棒最佳十人獎（游擊手）：2021–2025</li>
+                        <li>中華職棒金手套獎（游擊手）：2020–2025</li>
+                        <li>中華職棒年度最佳美技獎：2022、2025</li>
+                        <li>中華職棒單月MVP：2022/09</li>
+                        <li>中華職棒明星賽：2022–2025</li>
+                        <li style="color: #ffd700; font-weight: bold; border: 1px solid #ffd700;">2024世界棒球12強賽: 金牌</li>
+                        <li>2018年亞洲青棒錦標賽: 銀牌</li>
+                        <li>2015年亞洲青少棒錦標賽: 金牌</li>
+                        <li>2012年亞洲少棒錦標賽: 銀牌</li>
+                    </ul>
+                </div>
+
+            </div></main>
+    </div></body>
+</html>
