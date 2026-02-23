@@ -2,7 +2,7 @@
 <head>
     <title>內野手</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
- 	
+    
     <style>
         /* --- 基礎設定 --- */
         body {
@@ -128,13 +128,14 @@
             margin: 0;
         }
 
-        /* --- 照片牆樣式 --- */
+        /* --- 照片牆樣式 (修正對齊處) --- */
         .frame {
             display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
+            justify-content: flex-start; /* 統一靠左對齊 */
+            max-width: 1230px;           /* 鎖定寬度 (3張400px + 2個15px間距) */
+            margin: 0 auto 30px auto;    /* 讓整個照片牆置中 */
             gap: 15px;
-            flex-wrap: wrap; /* 允許換行 */
+            flex-wrap: wrap;             /* 允許換行 */
         }
 
         .photo-box {
@@ -154,7 +155,7 @@
             object-fit: cover;
         }
 
-        /* --- 遮罩層 (修改重點) --- */
+        /* --- 遮罩層 --- */
         .overlay {
             position: absolute;
             top: 0;
@@ -173,11 +174,11 @@
             opacity: 0;
             transition: opacity 0.3s ease-in-out;
             
-            /* 關鍵1：讓遮罩層本身「不接受」點擊，這樣點擊會穿透到底下的圖片連結 */
+            /* 讓遮罩層本身不接受點擊，穿透到底下的圖片連結 */
             pointer-events: none; 
         }
 
-        /* 關鍵2：讓遮罩層裡面的連結（按鈕）恢復「可以接受」點擊 */
+        /* 讓遮罩層裡面的連結恢復點擊 */
         .overlay a {
             pointer-events: auto;
             text-decoration: none;
@@ -188,7 +189,7 @@
             opacity: 1;
         }
         
-        .photo-box > a { text-decoration: none; } /* 針對外層包覆圖片的 a */
+        .photo-box > a { text-decoration: none; }
 
         /* 官網連結按鈕樣式 */
         .cpbl-link h1 p {
@@ -200,14 +201,12 @@
             display: inline-block;
             margin-top: 10px;
             cursor: pointer;
-            transition: background 0.3s; /* 增加平滑過渡 */
+            transition: background 0.3s;
         }
         
-        /* 滑鼠移上去變白色，跟外野手頁面一樣 */
         .cpbl-link h1 p:hover {
             background: #ffffff;
         }
-
     </style>
 </head>
 
@@ -215,7 +214,7 @@
     <script>
         window.addEventListener('click', function() {
              var audio = document.getElementById('myAudio');
-             audio.play(); // 註解掉以免自動播放
+             // audio.play(); // 註解掉以免自動播放
         });
     </script>
 
@@ -364,6 +363,7 @@
 
                 <div class="photo-box">
                     <a href="./江坤宇.html"><img src="./江坤宇.jpg" onerror="this.src='482089864_1661907861099263_5525568868990226170_n.jpg';"></a>
+                    <div class="overlay">
                         <h1>江坤宇90</h1>
                         <p>右投右打<br>175cm<br>78kg</p>
                         <a href="https://www.cpbl.com.tw/team/person?acnt=0000004636" class="cpbl-link"><h1><p>CPBL官網</p></h1></a>
@@ -400,8 +400,8 @@
                 </div>
             </div>
 
-            <div class="frame" style="justify-content: flex-start; padding-left: 17px;">
-                <div class="photo-box" style="margin-left: calc(50% - 620px);">
+            <div class="frame">
+                <div class="photo-box">
                     <a href="./內野手製作中.html"><img src="./徐紹予.jpg" onerror="this.src='482089864_1661907861099263_5525568868990226170_n.jpg';"></a>
                     <div class="overlay">
                         <h1>徐紹予69</h1>
